@@ -27,7 +27,7 @@ export default function PollCard({
       </div>
 
       <div className='space-y-3 mb-6'>
-        {options.map((option) => (
+        {options?.map((option) => (
           <label
             key={option.id}
             htmlFor={`option-${option.id}`}
@@ -62,7 +62,7 @@ export default function PollCard({
       </button>
       <div className='flex justify-end justify-items-end-safe text-right '>
           <Link
-          href={`poll/${id}`}
+          href={`view-polls/${id}`}
           className='  w-fit text-right text-[#015FC7] py-2 rounded-lg font-semibold transition-colors hover:text-[#001124]'
         >
           View Results

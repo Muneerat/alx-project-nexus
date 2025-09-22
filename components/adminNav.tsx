@@ -10,6 +10,11 @@ export default function AdminNavbar() {
       text: "Dashboard",
     },
     {
+      id: 3,
+      link: "/view-polls",
+      text: "View Polls",
+    },
+    {
       id: 2,
       link: "/profile",
       text: "Personal Info",

@@ -5,13 +5,10 @@ import AdminLayout from '@/components/AdminLayout'
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-// import FormInput from './input';
-// import Button from './button';
-// import UserLayout from './userLayout';
 import { useRouter } from 'next/navigation';
-// import { createPoll, addPollOptions } from '@/api/pollService';
 import FormInput from '@/components/input';
 import Button from '@/components/button';
+import { addPollOptions, createPoll } from '../api/auth';
 
 export default function CreatePoll() {
   const router = useRouter();
@@ -22,7 +19,7 @@ export default function CreatePoll() {
     initialValues: {
       title: '',
       description: '',
-      options: ['', ''], // Start with two empty option fields
+      options: [], 
     },
     validationSchema: Yup.object({
       title: Yup.string().required('Poll title is required'),
@@ -34,28 +31,39 @@ export default function CreatePoll() {
     onSubmit: async (values) => {
       setLoading(true);
       setErrorMessage('');
-    //   try {
-    //     // Step 1: Create the poll
-    //     const pollResponse = await createPoll({
-    //       title: values.title,
-    //       description: values.description,
-    //     });
+      try {
+        // Step 1: Create the poll without options
+        const pollResponse = await createPoll({
+          title: values.title,
+          description: values.description,
+          // we need to add options here
+          options: values.options.map((optionText) => ({ text: optionText }))
+        });
 
-    //     // Get the new poll's ID from the response
-    //     const newPollId = pollResponse.id;
+        // ✅ IMPORTANT: Check if the response contains the ID.
+        // The id will be in pollResponse.data if your API returns the poll object
+        // It could also be at response.data.id depending on your API wrapper
+        const newPollId = pollResponse.id || (pollResponse.data && pollResponse.data.id);
+        
+        if (!newPollId) {
+            throw new Error("API response did not return a poll ID.");
+        }
 
-    //     // Step 2: Format and add the options using the new poll ID
-    //     const optionsPayload = values.options.map((optionText) => ({ text: optionText }));
-    //     await addPollOptions(newPollId, optionsPayload);
+        console.log("New Poll ID:", newPollId);
 
-    //     // Redirect to the dashboard or the new poll page on success
-    //     router.push('/dashboard');
-    //   } catch (error) {
-    //     setErrorMessage('Failed to create poll. Please try again.');
-    //     console.error(error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
+        // Format and add the options using the new poll ID
+        const optionsPayload = {
+          options: values.options.map((optionText) => ({ text: optionText }))
+        };
+        await addPollOptions(newPollId, optionsPayload);
+
+        router.push('/dashboard');
+      } catch (error) {
+        setErrorMessage('Failed to create poll. Please check your form and try again.');
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
@@ -65,7 +73,7 @@ export default function CreatePoll() {
 
   return (
     <AdminLayout>
-      <div className='flex justify-center items-center w-full min-h- p-4'>
+      <div className='flex justify-center items-center w-full min-h-screen p-4'>
         <div className='bg-white rounded-lg shadow-xl p-8 max-w-lg w-full'>
           <h1 className='text-3xl font-bold text-center mb-6 text-[#001124]'>Create a New Poll</h1>
           {errorMessage && <p className='text-red-500 text-center mb-4'>{errorMessage}</p>}
@@ -74,7 +82,7 @@ export default function CreatePoll() {
               label='Poll Title'
               name='title'
               id='title'
-              placeholder='E.g., What is your favorite color?'
+              placeholder='Enter the title of your poll'
               value={formik.values.title}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -84,21 +92,26 @@ export default function CreatePoll() {
               label='Description'
               name='description'
               id='description'
-              placeholder='Give a brief description of the poll.'
+              placeholder='Enter a brief description'
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.description && formik.errors.description ? formik.errors.description : ''}
             />
-
-            <h2 className='text-xl font-semibold mt-6 mb-4'>Poll Options</h2>
+            <h2 className='text-xl font-semibold mt-6 mb-4 text-[#001124]'>Poll Options</h2>
+            {formik.values.options.length === 0 && (
+                <p className="text-[#001124] mb-2">Click below to add your first option.</p>
+            )}
+            {formik.values.options.length < 2 && (
+              <p className="text-red-500 mb-2">At least two options are required</p>
+            )}
             {formik.values.options.map((option, index) => (
               <div key={index} className='mb-4'>
                 <FormInput
                   label={`Option ${index + 1}`}
                   name={`options[${index}]`}
                   id={`options[${index}]`}
-                  placeholder='E.g., Blue'
+                  placeholder='Enter option text'
                   value={option}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -115,9 +128,8 @@ export default function CreatePoll() {
                 + Add Another Option
               </button>
             </div>
-
             <div className='mt-8'>
-              <Button  text={loading ? 'Creating...' : 'Create Poll'} disabled={loading} />
+              <Button text={loading ? 'Creating...' : 'Create Poll'} disabled={loading || !formik.isValid} />
             </div>
           </form>
         </div>

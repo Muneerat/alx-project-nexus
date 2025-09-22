@@ -1,7 +1,9 @@
+
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { Login } from "@/interface";
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
+import axiosInstance from './axiosInstance';
 
 type Data = {
   name: string;
@@ -25,8 +27,48 @@ export async function adminLogin(loginData) {
     console.log(response.data);
     return response;
   } catch (error) {
-    console.error("There was an error!", error);
+    console.log("There was an error!", error);
     throw error;
   }
 
+}
+
+// export async function createPoll(pollData) {
+//   try {
+//     const response = await axios.post("https://codedman.pythonanywhere.com/api/polls/", pollData, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         accept: "application/json",
+//       }
+//     });
+//     console.log(response.data);
+//     return response;
+//   } catch (error) {
+//     console.error("There was an error!", error);
+//     throw error;
+//   }
+
+// }
+
+
+export async function createPoll( pollData) {
+  try {
+    const response = await axiosInstance.post("api/polls/", pollData);
+    return response;
+  }catch (error) {
+    console.log("There was an error!", error);
+    throw error;
+  }
+  
+}
+
+// Function to add options to a poll
+export async function addPollOptions(pollId, options) {
+  try {
+    const response = await axiosInstance.post(`api/polls/${pollId}/options/`, options);
+    return response.data; // This should return the options data
+  } catch (error) {
+    console.log('Error adding poll options:', error);
+    throw error;
+  }
 }
