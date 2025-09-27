@@ -16,6 +16,8 @@ export default function handler(
   res.status(200).json({ name: "John Doe" });
 }
 
+//@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function adminLogin(loginData: any) {
   try {
     const response = await axios.post("https://codedman.pythonanywhere.com/auth/login/", loginData,{
@@ -50,7 +52,8 @@ export async function adminLogin(loginData: any) {
 
 // }
 
-
+//@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createPoll( pollData: any) {
   try {
     const response = await axiosInstance.post("/api/polls/", pollData);
@@ -74,6 +77,8 @@ interface AddPollOptionsResponse {
   // id: number;
   // text: string;
   // poll: number;
+ //@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 

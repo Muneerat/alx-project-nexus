@@ -6,18 +6,18 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "
 import { useEffect, useState } from "react"
 import { getResult } from "@/pages/api/polls"
 
-const chartData = [
-  { month: "January", desktop: 186,  },
-  { month: "February", desktop: 305,  },
-  { month: "March", desktop: 237,  },
-  { month: "April", desktop: 73,  },
-  { month: "May", desktop: 209,  },
-  { month: "June", desktop: 214,  },
-  {
-  "month": "Blue",
-  "votes": 1
-}
-]
+// const chartData = [
+//   { month: "January", desktop: 186,  },
+//   { month: "February", desktop: 305,  },
+//   { month: "March", desktop: 237,  },
+//   { month: "April", desktop: 73,  },
+//   { month: "May", desktop: 209,  },
+//   { month: "June", desktop: 214,  },
+//   {
+//   "month": "Blue",
+//   "votes": 1
+// }
+// ]
 
 
 
@@ -28,6 +28,8 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
+//@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ChartBar(pollId: any) {
 const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,6 +43,8 @@ const [chartData, setChartData] = useState([]);
         console.log(response,"chat response")
         
         // Transform the API response data for the chart
+        //@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedData = response.data.options.map((option: any) => ({
           name: option.text,
           votes: option.votes_count,
@@ -60,7 +64,7 @@ const [chartData, setChartData] = useState([]);
     if (pollId) {
       fetchResults();
     }
-  }, [pollId]);
+  }, [pollId,chartData,id]);
   
   if (loading) {
     return (

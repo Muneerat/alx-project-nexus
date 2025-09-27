@@ -11,6 +11,7 @@ import { createUser } from "@/pages/api/auth";
 import { toast } from "sonner"
 
 export default  function Register() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -51,7 +52,10 @@ export default  function Register() {
         localStorage.setItem('refresh_token', response.data.refresh);
         toast.success("Registration successful! You can now log in.")
         router.push("/");
-      }catch (err: any) {
+      }
+      //@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+      catch (err: any) {
         console.log(err);
          toast.error(err.response.data.detail || err.response.data.email || "Invalid email or password. Please try again.")
             

@@ -18,6 +18,8 @@ export default function PollCard({
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   console.log(selectedOption,"f")
     const [voting, setVoting] = useState(false);
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [voteMessage, setVoteMessage] = useState("");
 
     const handleSubmitVote = async () => {
