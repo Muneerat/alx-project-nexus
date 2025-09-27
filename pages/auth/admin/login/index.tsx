@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import * as Yup from "yup";
 
 export default function Login() {
+  //ts-ignore
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const router = useRouter();

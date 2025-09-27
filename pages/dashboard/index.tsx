@@ -18,6 +18,7 @@ export default function CreatePoll() {
 
   const formik = useFormik({
     initialValues: {
+      id: '',
       title: '',
       description: '',
         expires_at: '',
@@ -39,18 +40,18 @@ export default function CreatePoll() {
       try {
         // Step 1: Create the poll without options
         const pollResponse = await createPoll({
+          id: values.id +1,
           title: values.title,
           description: values.description,
            expires_at: values.expires_at,
           options: values.options.map((optionText) => ({ text: optionText }))
         });
+        console.log(pollResponse, "Poll creation response");
 
         // Extract the new poll ID from the response
-        const newPollId = pollResponse.id || (pollResponse.data && pollResponse.data.id);
+        const newPollId = pollResponse.id 
         
-        if (!newPollId) {
-            throw new Error("API response did not return a poll ID.");
-        }
+       
 
         console.log("New Poll ID:", newPollId);
 
@@ -58,13 +59,13 @@ export default function CreatePoll() {
         const optionsPayload = {
           options: values.options.map((optionText) => ({ text: optionText }))
         };
-        await addPollOptions(newPollId, optionsPayload);
         toast.success("Poll created successfully!");
+        await addPollOptions(newPollId, optionsPayload);
 
-        router.push('/dashboard');
+     
       } catch (error) {
-          toast.error("Failed to create poll. Please check your form and try again.")
-        setErrorMessage('Failed to create poll. Please check your form and try again.');
+        //   toast.error("Failed to create poll. Please check your form and try again.")
+        // setErrorMessage('Failed to create poll. Please check your form and try again.');
         console.log(error);
       } finally {
         setLoading(false);

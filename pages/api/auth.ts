@@ -16,7 +16,7 @@ export default function handler(
   res.status(200).json({ name: "John Doe" });
 }
 
-export async function adminLogin(loginData) {
+export async function adminLogin(loginData: any) {
   try {
     const response = await axios.post("https://codedman.pythonanywhere.com/auth/login/", loginData,{
         headers: {
@@ -51,9 +51,9 @@ export async function adminLogin(loginData) {
 // }
 
 
-export async function createPoll( pollData) {
+export async function createPoll( pollData: any) {
   try {
-    const response = await axiosInstance.post("api/polls/", pollData);
+    const response = await axiosInstance.post("/api/polls/", pollData);
     return response;
   }catch (error) {
     console.log("There was an error!", error);
@@ -63,9 +63,26 @@ export async function createPoll( pollData) {
 }
 
 // Function to add options to a poll
-export async function addPollOptions(pollId, options) {
+interface PollOption {
+  text: string;
+  // Add other fields as needed
+}
+
+interface AddPollOptionsResponse {
+  // Define the expected response structure if known
+  // For example:
+  // id: number;
+  // text: string;
+  // poll: number;
+  [key: string]: any;
+}
+
+export async function addPollOptions(
+  pollId: number | string,
+  options: PollOption[]
+): Promise<AddPollOptionsResponse> {
   try {
-    const response = await axiosInstance.post(`api/polls/${pollId}/options/`, options);
+    const response = await axiosInstance.post<AddPollOptionsResponse>(`api/polls/${pollId}/options/`, options);
     return response.data; // This should return the options data
   } catch (error) {
     console.log('Error adding poll options:', error);
