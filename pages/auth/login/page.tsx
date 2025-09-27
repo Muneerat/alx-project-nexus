@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import * as Yup from "yup";
+import { toast } from "sonner"
 
 export default function Login() {
    const [error, setError] = useState("")
@@ -40,10 +41,11 @@ export default function Login() {
          // Save tokens on successful login
            localStorage.setItem('access_token', response.data.access);
            localStorage.setItem('refresh_token', response.data.refresh);
-           
-           // Redirect
+            toast.success("Login successful!")
+    
            router.push("/poll");
-         } catch (err) {
+         } catch (err: string | any) {
+          toast.error(err.response.data.detail || "Invalid email or password. Please try again.")
            setError("Invalid email or password. Please try again.");
          } finally {
            setLoading(false);
@@ -93,7 +95,7 @@ export default function Login() {
               <span className="text-[#499FFE]">Register now</span>
             </Link>
           </p>
-          <Button text="Login" />
+          <Button text="Login"   disabled={loading || !formik.isValid} />
           </form>
         </div>
       </div>

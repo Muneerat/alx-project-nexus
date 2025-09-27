@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/pages/api/auth";
+import { toast } from "sonner"
 
 export default  function Register() {
   const [error, setError] = useState("")
@@ -48,9 +49,12 @@ export default  function Register() {
       // Save tokens on successful login
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
-        router.push("/poll")
-      }catch (err) {
+        toast.success("Registration successful! You can now log in.")
+        router.push("/");
+      }catch (err: any) {
         console.log(err);
+         toast.error(err.response.data.detail || err.response.data.email || "Invalid email or password. Please try again.")
+            
         setError("Invalid email or password. Please try again.");
       } finally {
         setLoading(false);
@@ -147,6 +151,7 @@ export default  function Register() {
               </Link>
             </p>
             <Button text="Register" 
+
             disabled={loading || !formik.isValid}/>
           </form>
         </div>

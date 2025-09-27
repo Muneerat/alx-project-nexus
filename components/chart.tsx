@@ -41,7 +41,7 @@ const [chartData, setChartData] = useState([]);
         console.log(response,"chat response")
         
         // Transform the API response data for the chart
-        const transformedData = response.data.options.map((option) => ({
+        const transformedData = response.data.options.map((option: any) => ({
           name: option.text,
           votes: option.votes_count,
         }));
@@ -91,7 +91,7 @@ const [chartData, setChartData] = useState([]);
       tickFormatter={(value) => value.slice(0, 100)}
     />
      <ChartTooltip content={<ChartTooltipContent />} />
-        <Bar dataKey="votes" fill="var(--color-desktop)" radius={4} className="w-1/5" size={8} />
+        <Bar dataKey="votes" fill="var(--color-desktop)" radius={4} className="w-1/5" />
       </BarChart>
     </ChartContainer>
   )

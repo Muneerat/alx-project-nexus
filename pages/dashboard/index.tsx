@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import FormInput from '@/components/input';
 import Button from '@/components/button';
 import { addPollOptions, createPoll } from '../api/auth';
+import { toast, } from 'sonner';
 
 export default function CreatePoll() {
   const router = useRouter();
@@ -19,11 +20,15 @@ export default function CreatePoll() {
     initialValues: {
       title: '',
       description: '',
+        expires_at: '',
       options: [], 
     },
     validationSchema: Yup.object({
       title: Yup.string().required('Poll title is required'),
       description: Yup.string().required('Description is required'),
+        expires_at: Yup.date() 
+        .required('Expiration date is required')
+        .min(new Date(), 'Expiration date must be in the future'),
       options: Yup.array()
         .of(Yup.string().required('Option cannot be empty'))
         .min(2, 'At least two options are required'),
@@ -36,13 +41,11 @@ export default function CreatePoll() {
         const pollResponse = await createPoll({
           title: values.title,
           description: values.description,
-          // we need to add options here
+           expires_at: values.expires_at,
           options: values.options.map((optionText) => ({ text: optionText }))
         });
 
-        // ✅ IMPORTANT: Check if the response contains the ID.
-        // The id will be in pollResponse.data if your API returns the poll object
-        // It could also be at response.data.id depending on your API wrapper
+        // Extract the new poll ID from the response
         const newPollId = pollResponse.id || (pollResponse.data && pollResponse.data.id);
         
         if (!newPollId) {
@@ -56,9 +59,11 @@ export default function CreatePoll() {
           options: values.options.map((optionText) => ({ text: optionText }))
         };
         await addPollOptions(newPollId, optionsPayload);
+        toast.success("Poll created successfully!");
 
         router.push('/dashboard');
       } catch (error) {
+          toast.error("Failed to create poll. Please check your form and try again.")
         setErrorMessage('Failed to create poll. Please check your form and try again.');
         console.log(error);
       } finally {
@@ -97,6 +102,17 @@ export default function CreatePoll() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.description && formik.errors.description ? formik.errors.description : ''}
+            />
+             <FormInput
+              label='Expiration Date'
+              placeholder='Select expiration date and time'
+              name='expires_at'
+              id='expires_at'
+              type='date' 
+              value={formik.values.expires_at}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.expires_at && formik.errors.expires_at ? formik.errors.expires_at : ''}
             />
             <h2 className='text-xl font-semibold mt-6 mb-4 text-[#001124]'>Poll Options</h2>
             {formik.values.options.length === 0 && (

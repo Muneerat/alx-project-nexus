@@ -1,8 +1,19 @@
 import { link } from "fs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function AdminNavbar() {
+  const router = useRouter();
+
+  const handleLogout = (e: any) => {
+    e.preventDefault();
+
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+
+    router.push("auth/admin/login");
+  };
   const navLinks = [
     {
       id: 1,
@@ -16,8 +27,9 @@ export default function AdminNavbar() {
     },
     {
       id: 2,
-      link: "/profile",
-      text: "Personal Info",
+      link: "#",
+      text: "Logout",
+      onClick: handleLogout,
     },
   ];
   return (
@@ -27,7 +39,12 @@ export default function AdminNavbar() {
       </div>
       <div className="flex gap-x-6">
         {navLinks.map((navLink, index) => (
-          <Link key={index} className="" href={navLink.link}>
+          <Link
+            key={index}
+            className=""
+            href={navLink.link}
+            {...(navLink.onClick ? { onClick: navLink.onClick } : {})}
+          >
             <p className="text-lg font-medium hover:border-b-2 hover:border-[#015FC7]">
               {navLink.text}
             </p>

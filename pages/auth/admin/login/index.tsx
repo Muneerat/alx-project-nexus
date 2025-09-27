@@ -4,9 +4,9 @@ import FormInput from "@/components/input";
 import FormInputPassword from "@/components/passwordInput";
 import { adminLogin } from "@/pages/api/auth";
 import { useFormik } from "formik";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "sonner";
 import * as Yup from "yup";
 
 export default function Login() {
@@ -36,10 +36,11 @@ export default function Login() {
       // Save tokens on successful login
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
-        
+         toast.success("Login successful!")
         // Redirect
         router.push("/dashboard");
-      } catch (err) {
+      } catch (err: any) {
+         toast.error(err.response.data.detail || "Invalid email or password. Please try again.")
         setError("Invalid email or password. Please try again.");
       } finally {
         setLoading(false);
@@ -84,7 +85,7 @@ export default function Login() {
           />
 
        
-          <Button text="Login" />
+          <Button text="Login" disabled={loading || !formik.isValid} />
           </form>
         </div>
       </div>

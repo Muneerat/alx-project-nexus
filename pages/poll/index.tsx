@@ -3,10 +3,20 @@ import PollCard from "@/components/pollCard";
 import React, { useEffect, useState } from "react";
 import { viewPolls } from "../api/polls";
 import UserLayout from "@/components/userLayout";
+import { toast } from "sonner";
 
+
+type PollType = {
+  id: string;
+  title: string;
+  description: string;
+  created_by: string;
+  expires_at: string;
+  options: any[]; 
+}
 
 export default  function Poll() {
-const [pollsData, setPollsData] = useState([]);
+const [pollsData, setPollsData] = useState<PollType[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -15,9 +25,11 @@ const [pollsData, setPollsData] = useState([]);
       try {
         const response = await viewPolls();
         console.log(response.data, "Polls data");
+        toast.success("Polls loaded successfully!");
         setPollsData(response.data.results);
       } catch (err) {
         console.error("Failed to fetch polls:", err);
+        toast.error("Failed to load polls.");
         setError("Failed to load polls.");
       } finally {
         setLoading(false);

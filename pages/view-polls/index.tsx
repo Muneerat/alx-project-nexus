@@ -4,9 +4,16 @@ import { pollsDate } from "@/data";
 import React, { useEffect, useState } from "react";
 import { viewPolls } from "../api/polls";
 
-
+type PollType = {
+  id: string;
+  title: string;
+  description: string;
+  created_by: string;
+  expires_at: string;
+  options: any[]; 
+}
 export default  function Poll() {
-const [pollsData, setPollsData] = useState([]);
+const [pollsData, setPollsData] = useState<PollType[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 

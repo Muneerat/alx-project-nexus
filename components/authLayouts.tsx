@@ -1,6 +1,7 @@
 import React from 'react'
 import img from "@/public/assets/mainimg.svg"
 import Image from 'next/image'
+import { Toaster } from 'sonner'
 
 export default function AuthLayouts({children}: { children :React.ReactNode}) {
   return (
@@ -14,6 +15,7 @@ export default function AuthLayouts({children}: { children :React.ReactNode}) {
         </div>
         <div className='md:w-1/2 w-full bg-[#001124] flex justify-center m-auto 
         '>
+            <Toaster position='top-right' richColors />
             {children}
         </div>
     </div>

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { PollsProps } from '@/interface';
 import Link from 'next/link';
 import { voteOnPoll } from '@/pages/api/polls';
+import { toast, Toaster } from 'sonner';
 
 export default function PollCard({
     id,
@@ -29,9 +30,11 @@ export default function PollCard({
         setVoteMessage("");
         try {
             await voteOnPoll(id, selectedOption);
+            toast.success("Vote submitted successfully!");
             setVoteMessage("Vote submitted successfully!");
             // You can also refresh the poll data here if needed
         } catch (error) {
+            toast.error("Failed to submit vote. Please try again.");
             setVoteMessage("Failed to submit vote. Please try again.");
             console.error(error);
         } finally {
@@ -41,6 +44,7 @@ export default function PollCard({
 
   return (
     <div className='bg-white rounded-lg shadow-md p-6 text-[#001124] border border-[#001124]'>
+      <Toaster position='top-right' richColors />
       <h1 className='text-2xl font-bold mb-2'>{title}</h1>
       <p className='text-gray-600 mb-4'>{description}</p>
 

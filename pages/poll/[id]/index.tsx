@@ -1,7 +1,7 @@
 // src/app/poll/[id]/page.js (or wherever your route is)
 'use client';
 
-import { ChartBar } from "@/components/example-chart";
+import { ChartBar } from "@/components/chart";
 import PollCard from "@/components/pollCard";
 import UserLayout from "@/components/userLayout";
 import { viewPoll } from "@/pages/api/polls";
@@ -10,17 +10,25 @@ import React, { useEffect, useState } from "react";
 
 export default function SinglePoll() {
   const params = useParams();
-  const pollId = params?.id;
+  const pollId = Array.isArray(params?.id) ? params?.id[0] : params?.id;
 
   const [singlePoll, setSinglePoll] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  type PollType = {
+  id: string;
+  title: string;
+  description: string;
+  created_by: string;
+  expires_at: string;
+  options: any[]; 
+}
 
   useEffect(() => {
     if (pollId) {
       const fetchSinglePoll = async () => {
         try {
-          const response = await viewPoll(pollId);
+          const response = await viewPoll(pollId as string);
           setSinglePoll(response.data);
         } catch (err) {
           console.error("Failed to fetch poll:", err);
@@ -67,7 +75,7 @@ export default function SinglePoll() {
   return (
     <UserLayout>
       <div className="max-w-5xl p-10 flex gap-10 justify-between">
-        <PollCard key={singlePoll.id} {...singlePoll} />
+        <PollCard  {...singlePoll} />
         <ChartBar pollId={pollId} />
       </div>
       

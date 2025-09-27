@@ -33,34 +33,34 @@ export async function adminLogin(loginData) {
 
 }
 
-export async function createPoll(pollData) {
-  try {
-    const response = await axios.post("https://codedman.pythonanywhere.com/api/polls/", pollData, {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: "application/json",
-      }
-    });
-    console.log(response.data);
-    return response;
-  } catch (error) {
-    console.error("There was an error!", error);
-    throw error;
-  }
-
-}
-
-
-// export async function createPoll( pollData) {
+// export async function createPoll(pollData) {
 //   try {
-//     const response = await axiosInstance.post("api/polls/", pollData);
+//     const response = await axios.post("https://codedman.pythonanywhere.com/api/polls/", pollData, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         accept: "application/json",
+//       }
+//     });
+//     console.log(response.data);
 //     return response;
-//   }catch (error) {
-//     console.log("There was an error!", error);
+//   } catch (error) {
+//     console.error("There was an error!", error);
 //     throw error;
 //   }
-  
+
 // }
+
+
+export async function createPoll( pollData) {
+  try {
+    const response = await axiosInstance.post("api/polls/", pollData);
+    return response;
+  }catch (error) {
+    console.log("There was an error!", error);
+    throw error;
+  }
+  
+}
 
 // Function to add options to a poll
 export async function addPollOptions(pollId, options) {
@@ -96,6 +96,16 @@ export async function userLogin(userData: Login){
           accept: "application/json",
         }
       });
+    return response;
+  }catch (error) {
+    console.log("There was an error!", error);
+    throw error;
+  }
+}
+
+export async function logoutUser(){
+  try {
+      const response = await axiosInstance.post("api-auth/logout/");
     return response;
   }catch (error) {
     console.log("There was an error!", error);
