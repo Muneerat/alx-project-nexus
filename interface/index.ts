@@ -21,7 +21,6 @@ export type  FormInputPassProps = {
   title: string;
   description: string;
   created_by: string;
-  created_at: string;
   expires_at: string;
   options: Options[]
 

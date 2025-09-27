@@ -1,16 +1,59 @@
+// src/app/poll/[id]/page.js (or wherever your route is)
+'use client';
+
+import { ChartBar } from "@/components/example-chart";
 import PollCard from "@/components/pollCard";
 import UserLayout from "@/components/userLayout";
-import { pollsDate } from "@/data";
+import { viewPoll } from "@/pages/api/polls";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function SinglePoll() {
- const params = useParams();
- const pollId = params?.id;
+  const params = useParams();
+  const pollId = params?.id;
 
- const singlePoll = pollsDate.find((poll) => Number(poll.id) === Number(pollId));
- console.log(singlePoll)
- console.log(pollId, "number")
+  const [singlePoll, setSinglePoll] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (pollId) {
+      const fetchSinglePoll = async () => {
+        try {
+          const response = await viewPoll(pollId);
+          setSinglePoll(response.data);
+        } catch (err) {
+          console.error("Failed to fetch poll:", err);
+          setError("Failed to load poll. It might not exist.");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchSinglePoll();
+    }
+  }, [pollId]);
+
+  if (loading) {
+    return (
+      <UserLayout>
+        <div className="flex justify-center items-center h-[50vh]">
+          <p className="text-xl text-gray-500">Loading poll...</p>
+        </div>
+      </UserLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <UserLayout>
+        <div className="flex justify-center items-center h-[50vh]">
+          <p className="text-xl text-red-500">{error}</p>
+        </div>
+      </UserLayout>
+    );
+  }
+
+  // If poll is not found after loading, show a specific message
   if (!singlePoll) {
     return (
       <UserLayout>
@@ -23,9 +66,11 @@ export default function SinglePoll() {
 
   return (
     <UserLayout>
-     
-        <PollCard  {...singlePoll} />
-   
+      <div className="max-w-5xl p-10 flex gap-10 justify-between">
+        <PollCard key={singlePoll.id} {...singlePoll} />
+        <ChartBar pollId={pollId} />
+      </div>
+      
     </UserLayout>
   );
 }

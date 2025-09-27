@@ -7,7 +7,7 @@ import { viewPolls } from "../api/polls";
 
 export default  function Poll() {
 const [pollsData, setPollsData] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const [pollsData, setPollsData] = useState([]);
     };
 
     fetchPolls();
-  }, []); // ✅ runs only once on mount
+  }, []); 
 
   if (loading) {
     return (

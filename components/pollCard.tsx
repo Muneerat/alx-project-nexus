@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { PollsProps } from '@/interface';
 import Link from 'next/link';
+import { voteOnPoll } from '@/pages/api/polls';
 
 export default function PollCard({
     id,
@@ -15,6 +16,28 @@ export default function PollCard({
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   console.log(selectedOption,"f")
+    const [voting, setVoting] = useState(false);
+    const [voteMessage, setVoteMessage] = useState("");
+
+    const handleSubmitVote = async () => {
+        if (!selectedOption) {
+            setVoteMessage("Please select an option to vote.");
+            return;
+        }
+
+        setVoting(true);
+        setVoteMessage("");
+        try {
+            await voteOnPoll(id, selectedOption);
+            setVoteMessage("Vote submitted successfully!");
+            // You can also refresh the poll data here if needed
+        } catch (error) {
+            setVoteMessage("Failed to submit vote. Please try again.");
+            console.error(error);
+        } finally {
+            setVoting(false);
+        }
+    };
 
   return (
     <div className='bg-white rounded-lg shadow-md p-6 text-[#001124] border border-[#001124]'>
@@ -50,8 +73,25 @@ export default function PollCard({
           </label>
         ))}
       </div>
+       <button
+                onClick={handleSubmitVote}
+                disabled={!selectedOption || voting}
+                className={`w-full text-white py-3 rounded-lg font-semibold transition-colors
+                    ${!selectedOption || voting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#001124] hover:bg-blue-9'}
+                `}
+            >
+                {voting ? 'Submitting...' : 'Submit Vote'}
+            </button>
+            <div className='flex justify-end justify-items-end-safe text-right '>
+                <Link
+                    href={`/poll/${id}`}
+                    className='w-fit text-right text-[#015FC7] py-2 rounded-lg font-semibold transition-colors hover:text-[#001124]'
+                >
+                    View Results
+                </Link>
+            </div>
 
-      <button
+      {/* <button
         onClick={() => console.log('Selected:', selectedOption)}
         disabled={!selectedOption}
         className={`w-full text-white py-3 rounded-lg font-semibold transition-colors
@@ -68,7 +108,7 @@ export default function PollCard({
           View Results
         </Link>
       </div>
-     
+      */}
     </div>
   );
 }

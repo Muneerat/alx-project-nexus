@@ -3,42 +3,58 @@ import Button from "@/components/button";
 import FormInput from "@/components/input";
 import FormInputPassword from "@/components/passwordInput";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import { createUser } from "@/pages/api/auth";
 
-export default function Register() {
+export default  function Register() {
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const formik = useFormik({
     initialValues: {
-      firstname: "",
+      first_name: "",
       surname: "",
       password: "",
       email: "",
-      confirmEmail: "",
-      confirmPassword: "",
+      confirm_email: "",
+      confirm_password: "",
     },
     validationSchema: Yup.object().shape({
-      firstname: Yup.string().required("Firstname is required"),
+      first_name: Yup.string().required("Firstname is required"),
       surname: Yup.string().required("Lastname is required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Enter a valid email address"),
-      confirmEmail: Yup.string()
+      confirm_email: Yup.string()
         .oneOf([Yup.ref("email")], "Email must match")
         .required("Enter a valid email address")
         .email("Invalid email address"),
       password: Yup.string()
         .required("Password is required")
         .min(8, "Password must be at least 8 characters long"),
-      confirmPassword: Yup.string()
+      confirm_password: Yup.string()
         .oneOf([Yup.ref("password")], "Password must match")
         .required("Password is required"),
     }),
-    onSubmit: (values) => {
-      console.log(values, "");
-      router.push("/poll")
+    onSubmit: async (values) => {
+       setLoading(true);
+      setError("");
+      try{
+        const response = await createUser(values)
+         console.log(response.data.access,"response")
+      // Save tokens on successful login
+        localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
+        router.push("/poll")
+      }catch (err) {
+        console.log(err);
+        setError("Invalid email or password. Please try again.");
+      } finally {
+        setLoading(false);
+      }
 
     },
   });
@@ -52,12 +68,12 @@ export default function Register() {
           <form onSubmit={formik.handleSubmit}>
             <FormInput
               label="Firstname"
-              id="firstname"
-              placeholder="Enter your firstname"
-              value={formik.values.firstname}
+              id="first_name"
+              placeholder="Enter your first name"
+              value={formik.values.first_name}
               onChange={formik.handleChange}
-              name="firstname"
-              error={formik.errors.firstname}
+              name="first_name"
+              error={formik.errors.first_name && formik.touched.first_name ? formik.errors.first_name : ""}
             />
             <FormInput
               label="Lastname"
@@ -88,13 +104,13 @@ export default function Register() {
             <FormInput
               label="Confirm Email"
               placeholder="Confirm your email"
-              value={formik.values.confirmEmail}
+              value={formik.values.confirm_email}
               onChange={formik.handleChange}
-              name="confirmEmail"
-              id="confirmEmail"
+              name="confirm_email"
+              id="confirm_email"
               error={
-                formik.touched.confirmEmail && formik.errors.confirmEmail
-                  ? formik.errors.confirmEmail
+                formik.touched.confirm_email && formik.errors.confirm_email
+                  ? formik.errors.confirm_email
                   : ""
               }
             />
@@ -114,13 +130,13 @@ export default function Register() {
             <FormInputPassword
               label="confirm Password"
               placeholder="Confirm your password"
-              value={formik.values.confirmPassword}
+              value={formik.values.confirm_password}
               onChange={formik.handleChange}
-              name="confirmPassword"
-              id="confirmPassword"
+              name="confirm_password"
+              id="confirm_password"
               error={
-                formik.touched.confirmPassword && formik.errors.confirmPassword
-                  ? formik.errors.confirmPassword
+                formik.touched.confirm_password && formik.errors.confirm_password
+                  ? formik.errors.confirm_password
                   : ""
               }
             />
@@ -130,7 +146,8 @@ export default function Register() {
                 <span className="text-[#499FFE]">Login now</span>
               </Link>
             </p>
-            <Button text="Register" />
+            <Button text="Register" 
+            disabled={loading || !formik.isValid}/>
           </form>
         </div>
       </div>

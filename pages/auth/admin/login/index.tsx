@@ -83,12 +83,7 @@ export default function Login() {
             }
           />
 
-          <p className="text-[#001124] md:w-4/6 w-5/6 mx-auto">
-            Not a user?{" "}
-            <Link href="/auth/register">
-              <span className="text-[#499FFE]">Register now</span>
-            </Link>
-          </p>
+       
           <Button text="Login" />
           </form>
         </div>

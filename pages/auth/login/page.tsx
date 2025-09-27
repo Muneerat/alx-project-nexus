@@ -2,13 +2,16 @@ import AuthLayouts from "@/components/authLayouts";
 import Button from "@/components/button";
 import FormInput from "@/components/input";
 import FormInputPassword from "@/components/passwordInput";
+import { adminLogin } from "@/pages/api/auth";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 
 export default function Login() {
+   const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -28,10 +31,25 @@ export default function Login() {
         .required("Password is required")
         .min(8, "Password must be at least 8 characters long"),
     }),
-    onSubmit: (values) => {
-      console.log(values, "");
-      router.push("/poll");
-    },
+    onSubmit: async (values) => {
+           setLoading(true);
+         setError("");
+       try{
+           const response = await adminLogin(values)
+           console.log(response.data.access,"response")
+         // Save tokens on successful login
+           localStorage.setItem('access_token', response.data.access);
+           localStorage.setItem('refresh_token', response.data.refresh);
+           
+           // Redirect
+           router.push("/poll");
+         } catch (err) {
+           setError("Invalid email or password. Please try again.");
+         } finally {
+           setLoading(false);
+         }
+        
+       },
   });
   return (
     <AuthLayouts>
