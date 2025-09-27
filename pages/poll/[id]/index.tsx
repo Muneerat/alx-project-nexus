@@ -21,6 +21,8 @@ export default function SinglePoll() {
   description: string;
   created_by: string;
   expires_at: string;
+  //@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: any[]; 
 }
 
@@ -75,7 +77,7 @@ export default function SinglePoll() {
   return (
     <UserLayout>
       <div className="max-w-5xl p-10 flex gap-10 justify-between">
-        <PollCard  {...singlePoll} />
+        <PollCard  {...(singlePoll as PollType)} /> 
         <ChartBar pollId={pollId} />
       </div>
       

@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { toast } from "sonner"
 
 export default function Login() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
    const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
   const router = useRouter();
@@ -44,7 +45,10 @@ export default function Login() {
             toast.success("Login successful!")
     
            router.push("/poll");
-         } catch (err: string | any) {
+         } 
+         //@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+         catch (err: string | any) {
           toast.error(err.response.data.detail || "Invalid email or password. Please try again.")
            setError("Invalid email or password. Please try again.");
          } finally {

@@ -12,6 +12,8 @@ type PollType = {
   description: string;
   created_by: string;
   expires_at: string;
+  //@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: any[]; 
 }
 

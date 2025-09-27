@@ -12,6 +12,8 @@ import * as Yup from "yup";
 export default function Login() {
   //ts-ignore
   const [loading, setLoading] = useState(false)
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState("")
   const router = useRouter();
   const formik = useFormik({
@@ -40,7 +42,10 @@ export default function Login() {
          toast.success("Login successful!")
         // Redirect
         router.push("/dashboard");
-      } catch (err: any) {
+      } 
+      //@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+      catch (err: any) {
          toast.error(err.response.data.detail || "Invalid email or password. Please try again.")
         setError("Invalid email or password. Please try again.");
       } finally {

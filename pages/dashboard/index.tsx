@@ -5,14 +5,12 @@ import AdminLayout from '@/components/AdminLayout'
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useRouter } from 'next/navigation';
 import FormInput from '@/components/input';
 import Button from '@/components/button';
 import { addPollOptions, createPoll } from '../api/auth';
 import { toast, } from 'sonner';
 
 export default function CreatePoll() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -49,16 +47,14 @@ export default function CreatePoll() {
         console.log(pollResponse, "Poll creation response");
 
         // Extract the new poll ID from the response
-        const newPollId = pollResponse.id 
+        const newPollId = pollResponse.data.id 
         
        
 
         console.log("New Poll ID:", newPollId);
 
         // Format and add the options using the new poll ID
-        const optionsPayload = {
-          options: values.options.map((optionText) => ({ text: optionText }))
-        };
+        const optionsPayload = values.options.map((optionText) => ({ text: optionText }));
         toast.success("Poll created successfully!");
         await addPollOptions(newPollId, optionsPayload);
 
