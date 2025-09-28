@@ -44,7 +44,6 @@ export default function CreatePoll() {
            expires_at: values.expires_at,
           options: values.options.map((optionText) => ({ text: optionText }))
         });
-        console.log(pollResponse, "Poll creation response");
 
         // Extract the new poll ID from the response
         const newPollId = pollResponse.data.id 

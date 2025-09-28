@@ -35,7 +35,6 @@ export default function Login() {
       setError("");
     try{
         const response = await adminLogin(values)
-        console.log(response.data.access,"response")
       // Save tokens on successful login
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
