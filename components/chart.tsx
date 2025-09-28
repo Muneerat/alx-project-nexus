@@ -49,10 +49,9 @@ const [chartData, setChartData] = useState([]);
           name: option.text,
           votes: option.votes_count,
         }));
-        console.log(transformedData)
+  
         
         setChartData(transformedData);
-        console.log(chartData,"chartdata")
       } catch (err) {
         console.error("Failed to get poll results:", err);
         setError("Failed to load poll results.");

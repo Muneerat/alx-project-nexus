@@ -22,10 +22,8 @@ const [pollsData, setPollsData] = useState<PollType[]>([]);
     const fetchPolls = async () => {
       try {
         const response = await viewPolls();
-        console.log(response.data, "Polls data");
         setPollsData(response.data.results);
       } catch (err) {
-        console.error("Failed to fetch polls:", err);
         setError("Failed to load polls.");
       } finally {
         setLoading(false);

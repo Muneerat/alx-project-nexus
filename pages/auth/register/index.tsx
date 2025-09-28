@@ -46,7 +46,6 @@ export default  function Register() {
       setError("");
       try{
         const response = await createUser(values)
-         console.log(response.data.access,"response")
       // Save tokens on successful login
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
@@ -56,7 +55,6 @@ export default  function Register() {
       //@typescript-eslint/no-explicit-any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
       catch (err: any) {
-        console.log(err);
          toast.error(err.response.data.detail || err.response.data.email || "Invalid email or password. Please try again.")
             
         setError("Invalid email or password. Please try again.");

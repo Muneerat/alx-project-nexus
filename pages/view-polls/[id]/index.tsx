@@ -9,8 +9,7 @@ export default function SinglePoll() {
  const pollId = params?.id;
 
  const singlePoll = pollsDate.find((poll) => Number(poll.id) === Number(pollId));
- console.log(singlePoll)
- console.log(pollId, "number")
+
   if (!singlePoll) {
     return (
       <UserLayout>

@@ -35,22 +35,6 @@ export async function adminLogin(loginData: any) {
 
 }
 
-// export async function createPoll(pollData) {
-//   try {
-//     const response = await axios.post("https://codedman.pythonanywhere.com/api/polls/", pollData, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//         accept: "application/json",
-//       }
-//     });
-//     console.log(response.data);
-//     return response;
-//   } catch (error) {
-//     console.error("There was an error!", error);
-//     throw error;
-//   }
-
-// }
 
 //@typescript-eslint/no-explicit-any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
