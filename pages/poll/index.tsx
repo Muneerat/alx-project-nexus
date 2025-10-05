@@ -28,7 +28,7 @@ const [pollsData, setPollsData] = useState<PollType[]>([]);
         const response = await viewPolls();
         toast.success("Polls loaded successfully!");
         setPollsData(response.data.results);
-      } catch (err) {
+      } catch  {
         toast.error("Failed to load polls.");
         setError("Failed to load polls.");
       } finally {

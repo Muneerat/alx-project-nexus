@@ -23,7 +23,7 @@ const [pollsData, setPollsData] = useState<PollType[]>([]);
       try {
         const response = await viewPolls();
         setPollsData(response.data.results);
-      } catch (err) {
+      } catch {
         setError("Failed to load polls.");
       } finally {
         setLoading(false);
