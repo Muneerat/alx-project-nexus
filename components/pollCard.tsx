@@ -35,8 +35,8 @@ export default function PollCard({
             toast.success("Vote submitted successfully!");
             setVoteMessage("Vote submitted successfully!");
             // You can also refresh the poll data here if needed
-        } catch (error) {
-            toast.error("Failed to submit vote. Please try again.");
+        } catch (error: any) {
+            toast.error(error.response.data.poll || "Failed to submit vote. Please try again.");
             setVoteMessage("Failed to submit vote. Please try again.");
             console.error(error);
         } finally {

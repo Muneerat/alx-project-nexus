@@ -61,7 +61,7 @@ const [pollsData, setPollsData] = useState<PollType[]>([]);
     <UserLayout>
       <div className="pt-22 bg-white mx-10">
         <h1 className="text-[#001124] text-5xl text-center py-4">
-          Active Polls
+          Active Polls 
         </h1>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
           {pollsData.map((pollDate, index) => (
