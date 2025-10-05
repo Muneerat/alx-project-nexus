@@ -16,7 +16,7 @@ export default function PollCard({
 }: PollsProps) {
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  console.log(selectedOption,"f")
+
     const [voting, setVoting] = useState(false);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,8 +35,11 @@ export default function PollCard({
             toast.success("Vote submitted successfully!");
             setVoteMessage("Vote submitted successfully!");
             // You can also refresh the poll data here if needed
-        } catch (error) {
-            toast.error("Failed to submit vote. Please try again.");
+        } 
+          //@typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+        catch (error: any) {
+            toast.error(error.response.data.poll || "Failed to submit vote. Please try again.");
             setVoteMessage("Failed to submit vote. Please try again.");
             console.error(error);
         } finally {

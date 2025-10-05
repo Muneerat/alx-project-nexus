@@ -36,7 +36,10 @@ export default  function Register() {
         .email("Invalid email address"),
       password: Yup.string()
         .required("Password is required")
-        .min(8, "Password must be at least 8 characters long"),
+        .min(8, "Password must be at least 8 characters long")
+        //check for white space in password using regex
+        .matches(/^\S*$/, "Password must not contain spaces"),
+        
       confirm_password: Yup.string()
         .oneOf([Yup.ref("password")], "Password must match")
         .required("Password is required"),
@@ -154,7 +157,7 @@ export default  function Register() {
             </p>
             <Button text="Register" 
 
-            disabled={loading || !formik.isValid}/>
+            disabled={loading}/>
           </form>
         </div>
       </div>

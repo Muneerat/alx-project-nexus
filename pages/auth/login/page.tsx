@@ -31,8 +31,10 @@ export default function Login() {
 
       password: Yup.string()
         .required("Password is required")
-        .min(8, "Password must be at least 8 characters long"),
+        .min(8, "Password must be at least 8 characters long")
+             .matches(/^\S*$/, "Password must not contain spaces"),
     }),
+
     onSubmit: async (values) => {
            setLoading(true);
          setError("");
@@ -99,7 +101,7 @@ export default function Login() {
               <span className="text-[#499FFE]">Register now</span>
             </Link>
           </p>
-          <Button text="Login"   disabled={loading || !formik.isValid} />
+          <Button text="Login"   disabled={loading} />
           </form>
         </div>
       </div>
