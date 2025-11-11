@@ -5,7 +5,7 @@ export interface ButtonProps {
   value?: string;
   disabled?: boolean;
 }
-export default function Button({ text, disabled }: ButtonProps) {
+export default function Button({ text, disabled, }: ButtonProps) {
   return (
     <button
       type="submit"

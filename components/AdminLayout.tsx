@@ -4,7 +4,7 @@ import { Toaster } from 'sonner'
 
 export default function AdminLayout({children}: {children : React.ReactNode}) {
   return (
-    <div className='bg-white h-full py-20'>
+    <div className='bg-white h-[100vh] py-20'>
     <AdminNavbar />
 
     <div>

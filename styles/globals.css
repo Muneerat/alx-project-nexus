@@ -7,16 +7,16 @@
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --radius: 0.625rem;
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+ --card: 220 45% 12%;
+    --card-foreground: 0 0% 100%;
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: hsl(212,99%,39%);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted: 220 40% 20%;
+    --muted-foreground: 0 0% 70%;
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -36,6 +36,12 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+    --neon-blue: 212 99% 39%;
+    --neon-glow: 212 99% 39%;
+    --navy-dark: 220 50% 8%;
+    --navy-medium: 220 45% 15%;
+
 }
 
 @theme inline {
@@ -76,6 +82,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+
+  
 }
 
 @media (prefers-color-scheme: dark) {
@@ -123,6 +132,12 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+    --neon-blue: 190 95% 50%;
+    --neon-glow: 190 100% 60%;
+    --navy-dark: 220 50% 8%;
+    --navy-medium: 220 45% 15%;
+
 }
 
 @layer base {
@@ -131,5 +146,25 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .neon-text {
+    text-shadow: 0 0 10px hsl(var(--neon-blue)), 0 0 20px hsl(var(--neon-blue)), 0 0 30px hsl(var(--neon-blue));
+  }
+  
+  .neon-border {
+    box-shadow: 0 0 5px hsl(var(--neon-blue)), 0 0 10px hsl(var(--neon-blue)), inset 0 0 5px hsl(var(--neon-blue) / 0.2);
+  }
+  
+  .neon-glow {
+    box-shadow: 0 0 20px hsl(var(--neon-glow) / 0.5), 0 0 40px hsl(var(--neon-glow) / 0.3);
+  }
+
+  .glass-effect {
+    background: hsl(var(--card) / 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--border) / 0.5);
   }
 }

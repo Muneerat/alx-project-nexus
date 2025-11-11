@@ -9,20 +9,20 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { toast } from "sonner"
+import { useGetProfileQuery, useLoginUserMutation } from "@/services";
 
 export default function Login() {
+  const [isLoginUser, {isLoading  }] = useLoginUserMutation();
+  const {data: getProfile,refetch: refetchProfile} = useGetProfileQuery();
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
    const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      firstname: "",
-      surname: "",
       password: "",
       email: "",
-      confirmEmail: "",
-      confirmPassword: "",
     },
     validationSchema: Yup.object().shape({
       email: Yup.string()
@@ -36,29 +36,46 @@ export default function Login() {
     }),
 
     onSubmit: async (values) => {
-           setLoading(true);
          setError("");
-       try{
-           const response = await adminLogin(values)
-           console.log(response.data.access,"response")
-         // Save tokens on successful login
-           localStorage.setItem('access_token', response.data.access);
-           localStorage.setItem('refresh_token', response.data.refresh);
-            toast.success("Login successful!")
-    
+         await isLoginUser({
+          email: values.email,
+          password: values.password
+
+         })
+         .unwrap()
+         .then((response: any) => {
+          console.log(response, "response")
+          const access =
++            response.access
+          toast.success("Login successful!")
            router.push("/poll");
-         } 
-         //@typescript-eslint/no-explicit-any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-         catch (err: string | any) {
-          toast.error(err.response.data.detail || "Invalid email or password. Please try again.")
-           setError("Invalid email or password. Please try again.");
-         } finally {
-           setLoading(false);
-         }
+         })
+         .catch((err: any) => {
+          console.log(err, "error")
+          toast.error(err.data?.email || err.data?.detail || "Invalid email or password. Please try again.")
+    })
+//        try{
+//            const response = await adminLogin(values)
+//            console.log(response.data.access,"response")
+//          // Save tokens on successful login
+//            localStorage.setItem('access_token', response.data.access);
+//            localStorage.setItem('refresh_token', response.data.refresh);
+//             toast.success("Login successful!")
+    
+//            router.push("/poll");
+//          } 
+//          //@typescript-eslint/no-explicit-any
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//          catch (err: string | any) {
+//           toast.error(err.response.data.detail || "Invalid email or password. Please try again.")
+//            setError("Invalid email or password. Please try again.");
+//          } finally {
+//            setLoading(false);
+//          }
         
        },
   });
+    console.log( getProfile, "profile data")
   return (
     <AuthLayouts>
       <div className="w-full my-auto ">
@@ -101,7 +118,7 @@ export default function Login() {
               <span className="text-[#499FFE]">Register now</span>
             </Link>
           </p>
-          <Button text="Login"   disabled={loading} />
+          <Button text="Login"   disabled={isLoading} />
           </form>
         </div>
       </div>

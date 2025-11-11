@@ -9,11 +9,12 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/pages/api/auth";
 import { toast } from "sonner"
+import { useRegisterUserMutation } from "@/services";
 
 export default  function Register() {
+  const [registerUser, {isLoading,}] = useRegisterUserMutation();
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const formik = useFormik({
     initialValues: {
@@ -45,25 +46,28 @@ export default  function Register() {
         .required("Password is required"),
     }),
     onSubmit: async (values) => {
-       setLoading(true);
       setError("");
-      try{
-        const response = await createUser(values)
-      // Save tokens on successful login
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
-        toast.success("Registration successful! You can now log in.")
-        router.push("/");
-      }
-      //@typescript-eslint/no-explicit-any
+      await registerUser({
+        first_name: values.first_name ,
+        surname: values.surname,
+        email: values.email,
+        confirm_email: values.confirm_email,
+        password: values.password,
+        confirm_password: values.confirm_password
+
+      })
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      catch (err: any) {
-         toast.error(err.response.data.detail || err.response.data.email || "Invalid email or password. Please try again.")
-            
-        setError("Invalid email or password. Please try again.");
-      } finally {
-        setLoading(false);
-      }
+      .unwrap()
+      .then((response: any) => {
+        console.log(response, "response")
+        toast("Registration successful! You can now log in.");
+        router.push("/");
+      })
+      .catch((err: any) => {
+        console.log(err.data, "error")
+        toast.error(err.data?.email || "Invalid email or password. Please try again");
+        setError("Registration failed. Please try again.");
+      })
 
     },
   });
@@ -86,7 +90,7 @@ export default  function Register() {
             />
             <FormInput
               label="Lastname"
-              placeholder="Enter your lastname"
+              placeholder="Enter your last name"
               value={formik.values.surname}
               onChange={formik.handleChange}
               name="surname"
@@ -157,7 +161,7 @@ export default  function Register() {
             </p>
             <Button text="Register" 
 
-            disabled={loading}/>
+            disabled={isLoading}/>
           </form>
         </div>
       </div>

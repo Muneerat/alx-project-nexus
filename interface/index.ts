@@ -33,3 +33,9 @@ export interface Options {
   email: string;
   password: string
  }
+
+ export interface BoxCardProps{
+  // id: string;
+  text: string;
+  number: string
+ }

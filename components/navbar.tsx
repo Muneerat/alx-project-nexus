@@ -1,7 +1,9 @@
 
+import { LogOut, Vote } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { Button } from "./ui/button";
 
 export default function Navbar() {
    const router = useRouter();
@@ -22,19 +24,22 @@ export default function Navbar() {
       text: "Polls",
       onClick: null,
     },
-    {
-      id: 2,
-      link: "#",
-      text: "Logout",
-      onClick: handleLogout,
-    },
+    // {
+    //   id: 2,
+    //   link: "#",
+    //   text: "Logout",
+    //   onClick: handleLogout,
+    // },
   ];
 
 
   return (
-    <div className="bg-[#001124] text-white py-4 w-full fixed flex justify-between items-center px-8 top-0 ">
-      <div>
-        <h1 className="text-4xl font-bold font-serif ">Vote</h1>
+    <div className="bg-[#001124] text-white py-4 w-full fixed flex justify-between items-center px-8 top-0 border-b border-border/50 backdrop-blur-sm  z-50 ">
+      <div className="flex items-center gap-3">
+       <div className="p-2 rounded-lg bg-primary/10 neon-glow">
+            <Vote className="w-6 h-6 text-[#015FC7]" />
+          </div>
+          <h1 className="text-2xl font-bold neon-text">VoteHub</h1>
       </div>
       <div className="flex gap-x-6">
         {navLinks.map((navLink, index) => (
@@ -44,14 +49,20 @@ export default function Navbar() {
             href={navLink.link}
             {...(navLink.onClick ? { onClick: navLink.onClick } : {})}
           >
-            <p className="text-lg font-medium hover:border-b-2 hover:border-[#015FC7]">
+            <p className="text-lg font-medium hover:border-b-2 hover:border-[hsl(212,99%,39%)]">
               {navLink.text}
             </p>
           </Link>
         ))}
       </div>
 
-      <p className="text-base font-medium"></p>
+      <div className="flex items-center gap-4">
+          {/* <span className="text-sm text-muted-foreground">{user?.email}</span> */}
+          <Button variant="neon" className="neon-text" size="sm" onClick={handleLogout}>
+            <LogOut className="w-4 h-4" />
+            Sign Out
+          </Button>
+        </div>
     </div>
   );
 }

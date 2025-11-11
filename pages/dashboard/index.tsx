@@ -9,10 +9,12 @@ import FormInput from '@/components/input';
 import Button from '@/components/button';
 import { addPollOptions, createPoll } from '../api/auth';
 import { toast, } from 'sonner';
+import { GetRoleCount } from '../api/polls';
 
 export default function CreatePoll() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  GetRoleCount()
 
   const formik = useFormik({
     initialValues: {

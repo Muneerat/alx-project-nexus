@@ -1,38 +1,46 @@
 import axiosInstance from "./axiosInstance";
 
 export async function viewPolls() {
-    try{
+    try {
         const response = await axiosInstance.get("/api/polls");
         return response
-    }catch(error){
+    } catch (error) {
         throw error
     }
 }
 
 export async function voteOnPoll(pollId: string, optionId: string) {
-    try{
-        const response = await axiosInstance.post(`/api/polls/${pollId}/vote/`, {option_id: optionId });
+    try {
+        const response = await axiosInstance.post(`/api/polls/${pollId}/vote/`, { option_id: optionId });
         return response
-    }catch(error){
+    } catch (error) {
         throw error
     }
 }
 
 export async function viewPoll(pollId: string) {
-    try{
+    try {
         const response = await axiosInstance.get(`/api/polls/${pollId}`);
         return response
-    }catch(error){
+    } catch (error) {
         throw error
     }
 }
 
-export async function getResult(pollId: string){
-    try{
+export async function getResult(pollId: string) {
+    try {
         const response = await axiosInstance.get(`/api/polls/${pollId}/results`);
         return response
-    }catch(error){
+    } catch (error) {
         throw error
     }
 }
-    
+
+export async function GetRoleCount() {
+    try {
+        const response = await axiosInstance.get("/auth/users/role-counts");
+        return response
+    } catch (error) {
+        throw error
+    }
+}

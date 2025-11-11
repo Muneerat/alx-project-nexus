@@ -1,3 +1,4 @@
+import { link } from "fs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -17,8 +18,13 @@ export default function AdminNavbar() {
   const navLinks = [
     {
       id: 1,
+      link: "/box",
+      text: "Dashboard"
+    },
+    {
+      id: 2,
       link: "/dashboard",
-      text: "Dashboard",
+      text: "Create Poll",
     },
     {
       id: 3,
@@ -26,7 +32,7 @@ export default function AdminNavbar() {
       text: "View Polls",
     },
     {
-      id: 2,
+      id: 4,
       link: "#",
       text: "Logout",
       onClick: handleLogout,

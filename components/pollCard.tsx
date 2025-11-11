@@ -48,14 +48,14 @@ export default function PollCard({
     };
 
   return (
-    <div className='bg-white rounded-lg shadow-md p-6 text-[#001124] border border-[#001124]'>
+    <div className='bg-white rounded-lg shadow-md p-6 text-[#001124] border border-[#001124]  hover:shadow-2xl transition-all duration-300 '>
       <Toaster position='top-right' richColors />
-      <h1 className='text-2xl font-bold mb-2'>{title}</h1>
+      <h1 className='text-2xl font-semibold mb-2'>{title}</h1>
       <p className='text-gray-600 mb-4'>{description}</p>
 
       <div className='flex items-center justify-between text-sm text-gray-500 mb-4'>
         <p>Created by: {created_by}</p>
-        <p>Expires: {expires_at}</p>
+        <p>Expires:   {new Date(expires_at).toLocaleDateString()}</p>
       </div>
 
       <div className='space-y-3 mb-6'>
