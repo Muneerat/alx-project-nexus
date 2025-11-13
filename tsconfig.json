@@ -17,6 +17,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/poll/[id]"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/polls/[id]"],
   "exclude": ["node_modules"]
 }

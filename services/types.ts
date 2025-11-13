@@ -1,3 +1,4 @@
+
 export type userData =  {
     first_name: string,
     surname: string
@@ -11,3 +12,38 @@ export type loginData = {
     email: string,
     password: string
 }
+export type userProfile = {
+    email: string,
+    first_name: string,
+    surname: string,
+    role: string
+}
+
+export type PollTypeResult = {
+    results: PollType[]
+}
+
+export type PollType = {
+  id: string;
+  title: string;
+  description: string;
+  created_by: string;
+  expires_at: string;
+  options: { id: string | number; text: string }[]; 
+  has_voted?: boolean; // Add this if your API returns it
+}
+
+export type VotePayload = {
+  pollId: string; 
+  option_id:  string; 
+}
+// type PollType = {
+//   id: string;
+//   title: string;
+//   description: string;
+//   created_by: string;
+//   expires_at: string;
+//   //@typescript-eslint/no-explicit-any
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   options: any[]; 
+// }

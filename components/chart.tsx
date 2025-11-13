@@ -94,7 +94,7 @@ const [chartData, setChartData] = useState([]);
       tickFormatter={(value) => value.slice(0, 100)}
     />
      <ChartTooltip content={<ChartTooltipContent />} />
-        <Bar dataKey="votes" fill="var(--color-desktop)" radius={4} className="w-1/5" />
+        <Bar dataKey="votes" fill="var(--color-secondary)" radius={4} className="w-4/5 gap-3" />
       </BarChart>
     </ChartContainer>
   )

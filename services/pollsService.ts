@@ -1,12 +1,12 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { loginData, userData, userProfile } from "./types";
+import { loginData, PollTypeResult, userData, userProfile, VotePayload } from "./types";
 import { queryPath } from "./endpoint";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-export const authServiceApi = createApi({
-  reducerPath: "authService ",
+export const pollServiceApi = createApi({
+  reducerPath: "pollService ",
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL,
       // credentials: "include",
     prepareHeaders: (headers, { getState }) => {
@@ -16,7 +16,7 @@ export const authServiceApi = createApi({
     
        if (!token && typeof window !== "undefined") {
        token = sessionStorage.getItem("access_token") ?? sessionStorage.getItem("accessToken") ?? sessionStorage.getItem("token") ?? undefined;
-       let refresh_token = sessionStorage.getItem("refresh_tokens")
+   
        }
        if (token) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -25,22 +25,23 @@ export const authServiceApi = createApi({
     }
    }),
   endpoints: (builder) => ({
-    registerUser: builder.mutation<userData, userData>({
-      query: (body) => ({
-        url: queryPath.register,
+    voteOnPoll: builder.mutation<any, VotePayload>({
+      query: ({pollId, option_id}) => ({
+        url: `/api/polls/${pollId}/vote/`,
         method: "POST",
-        body,
+        body: {
+      option_id: option_id, 
+    },
         headers: {
           "Content-Type": "application/json",
         },
       }),
     }),
-    loginUser: builder.mutation<loginData, loginData>({
-      query: (body) => ({
-        url: queryPath.login,
-        method: "POST",
-        body,
-        headers: {
+    getActivePoll: builder.query<PollTypeResult, {pollId: string | undefined}>({
+      query: ({pollId}) => ({
+        url: `/api/polls/${pollId}/`,
+        method: "GET",
+         headers: {
           "Content-Type": "application/json",
         },
       }),
@@ -55,9 +56,9 @@ export const authServiceApi = createApi({
         },
       }),
     }),
-    getProfile: builder.query<userProfile, void>({
+    getActivePolls: builder.query<PollTypeResult, void>({
       query: () => ({
-        url: queryPath.profile,
+        url: queryPath.activePolls,
         method: "GET",
          headers: {
           "Content-Type": "application/json",
@@ -67,4 +68,4 @@ export const authServiceApi = createApi({
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation, useLogoutMutation, useGetProfileQuery } = authServiceApi;
+export const { useVoteOnPollMutation, useGetActivePollQuery, useGetActivePollsQuery } = pollServiceApi;

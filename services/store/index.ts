@@ -2,14 +2,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authServiceApi } from "../authService";
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { pollServiceApi } from "../pollsService";
 
 export const store = configureStore({
     reducer: {
-        [authServiceApi.reducerPath] : authServiceApi.reducer
+        [authServiceApi.reducerPath] : authServiceApi.reducer,
+        [pollServiceApi.reducerPath] : pollServiceApi.reducer,
     },
 
     middleware: (GetDefaultMiddleware) => 
         GetDefaultMiddleware().concat(authServiceApi.middleware)
+        .concat(pollServiceApi.middleware)
 })
 
 setupListeners(store.dispatch)

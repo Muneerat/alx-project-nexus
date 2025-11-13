@@ -36,7 +36,7 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-
+  --neon: oklab(79.259% -0.11096 -0.08984);
     --neon-blue: 212 99% 39%;
     --neon-glow: 212 99% 39%;
     --navy-dark: 220 50% 8%;
@@ -82,6 +82,11 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --neon: var(--neon);
+    --neon-blue: var(--neon-blue);
+    --neon-glow: var(--neon-glow);
+    --navy-dark: var(--navy-dark);
+    --navy-medium: var(--navy-medium);
 
 
   
@@ -132,7 +137,7 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-
+  --neon: oklab(79.259% -0.11096 -0.08984);
     --neon-blue: 190 95% 50%;
     --neon-glow: 190 100% 60%;
     --navy-dark: 220 50% 8%;

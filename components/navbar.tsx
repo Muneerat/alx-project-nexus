@@ -4,24 +4,33 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "./ui/button";
+import { useLogoutMutation } from "@/services";
+import { toast } from "sonner";
 
 export default function Navbar() {
    const router = useRouter();
+   const [isLogout] = useLogoutMutation()
+   const handleLogout = async (e: any) => {
+    e.preventDefault(); 
+    const refresh_token = sessionStorage.getItem("refresh_token") || undefined;
+    await isLogout({refresh: refresh_token})
+    .unwrap()
+    .then(() => {
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("token");
+      }
+      toast.success("Logout successful!");
+      router.push('/'); 
+    })
+   }
  //@typescript-eslint/no-explicit-any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleLogout = (e: any) => {
-    e.preventDefault(); 
-    
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
 
-    router.push('/'); 
-  };
   const navLinks = [
     {
       id: 1,
-      link: "/poll",
-      text: "Polls",
+      link: "/polls",
+      text: "Active Polls",
       onClick: null,
     },
     // {
