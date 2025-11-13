@@ -2,25 +2,23 @@
 
 import React, { useState } from "react";
 import { PollsProps } from "@/interface";
-import Link from "next/link";
-// import { voteOnPoll } from "@/pages/api/polls";
 import { toast, Toaster } from "sonner";
 import { useVoteOnPollMutation } from "@/services/pollsService";
+import { Spinner } from "./ui/spinner";
 
-export default function PollCard({
+export default function PollCardDetail({
   id,
   title,
   description,
   created_by,
   expires_at,
   options,
+  total_votes
 }: PollsProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [voting, setVoting] = useState(false);
-  const [voteOnPoll] = useVoteOnPollMutation();
+  const [voteOnPoll, { isLoading }] = useVoteOnPollMutation();
 
   const handleSubmitVote = async () => {
     if (!selectedOption) {
@@ -40,6 +38,7 @@ export default function PollCard({
       );
     }
   };
+  if (isLoading)  <Spinner />
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 text-[#001124] border border-[#001124]  hover:shadow-2xl transition-all duration-300 ">
@@ -93,33 +92,10 @@ export default function PollCard({
       >
         {voting ? "Submitting..." : "Submit Vote"}
       </button>
-      <div className="flex justify-end justify-items-end-safe text-right ">
-        <Link
-          href={`/polls/${id}`}
-          className="w-fit text-right text-[#015FC7] py-2 rounded-lg font-semibold transition-colors hover:text-[#001124]"
-        >
-          View Results
-        </Link>
-      </div>
 
-      {/* <button
-        onClick={() => console.log('Selected:', selectedOption)}
-        disabled={!selectedOption}
-        className={`w-full text-white py-3 rounded-lg font-semibold transition-colors
-          ${!selectedOption ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#001124] hover:bg-blue-9'}
-        `}
-      >
-        Submit Vote
-      </button>
-      <div className='flex justify-end justify-items-end-safe text-right '>
-          <Link
-          href={`view-polls/${id}`}
-          className='  w-fit text-right text-[#015FC7] py-2 rounded-lg font-semibold transition-colors hover:text-[#001124]'
-        >
-          View Results
-        </Link>
+      <div className="flex justify-end py-5 font-bold justify-items-end-safe text-[#015FC7] ">
+        <p>Total vote: {total_votes}</p>
       </div>
-      */}
     </div>
   );
 }

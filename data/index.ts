@@ -148,3 +148,39 @@ export const pollsDate = [
   //   ],
   // },
 ];
+
+  export const adminNavLinks = [
+    {
+      id: 1,
+      link: "/dashboard",
+      text: "Dashboard",
+       onClick: null,
+    },
+    {
+      id: 2,
+      link: "/createPoll",
+      text: "Create Poll",
+       onClick: null,
+    },
+    {
+      id: 3,
+      link: "/view-polls",
+      text: "Active Polls",
+       onClick: null,
+    },
+   
+  ];
+    export const userNavLinks = [
+    {
+      id: 1,
+      link: "/polls",
+      text: "Active Polls",
+      onClick: null,
+    },
+    // {
+    //   id: 2,
+    //   link: "#",
+    //   text: "Logout",
+    //   onClick: handleLogout,
+    // },
+  ];

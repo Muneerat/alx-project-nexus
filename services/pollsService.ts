@@ -46,11 +46,10 @@ export const pollServiceApi = createApi({
         },
       }),
     }),
-    logout: builder.mutation({
-      query: (body: {refresh?: string}) => ({
-        url: queryPath.logout,
-        method: "POST",
-        body,
+    getPollResult: builder.query({
+      query: ({id}) => ({
+        url: `${queryPath.getPollResult}/${id}/results/`,
+        method: "GET",
          headers: {
           "Content-Type": "application/json",
         },
@@ -68,4 +67,4 @@ export const pollServiceApi = createApi({
   }),
 });
 
-export const { useVoteOnPollMutation, useGetActivePollQuery, useGetActivePollsQuery } = pollServiceApi;
+export const { useVoteOnPollMutation, useGetActivePollQuery, useGetPollResultQuery, useGetActivePollsQuery } = pollServiceApi;

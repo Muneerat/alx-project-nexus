@@ -7,10 +7,10 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/pages/api/auth";
 import { toast } from "sonner"
 import { useRegisterUserMutation } from "@/services";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default  function Register() {
   const [registerUser, {isLoading,}] = useRegisterUserMutation();
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -56,15 +56,16 @@ export default  function Register() {
         confirm_password: values.confirm_password
 
       })
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
       .unwrap()
+      
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => {
-        console.log(response, "response")
+        console.log(response, "r")
         toast("Registration successful! You can now log in.");
         router.push("/");
       })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .catch((err: any) => {
-        console.log(err.data, "error")
         toast.error(err.data?.email || "Invalid email or password. Please try again");
         setError("Registration failed. Please try again.");
       })

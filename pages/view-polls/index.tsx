@@ -1,7 +1,8 @@
-import AdminLayout from "@/components/AdminLayout";
+
 import PollCard from "@/components/pollCard";
 import React, { useEffect, useState } from "react";
 import { viewPolls } from "../api/polls";
+import Layout from "@/components/layout";
 
 type PollType = {
   id: string;
@@ -35,24 +36,24 @@ const [pollsData, setPollsData] = useState<PollType[]>([]);
 
   if (loading) {
     return (
-      <AdminLayout>
+      <Layout>
         <p className="text-center mt-10">Loading polls...</p>
-      </AdminLayout>
+      </Layout>
     );
   }
 
   if (error) {
     return (
-      <AdminLayout>
+      <Layout>
         <p className="text-center text-red-500 mt-10">{error}</p>
-      </AdminLayout>
+      </Layout>
     );
   }
 
 
 
   return (
-    <AdminLayout>
+    <Layout>
       <div className="pt-22 bg-white mx-10">
         <h1 className="text-[#001124] text-5xl text-center py-4">
           Active Polls
@@ -64,6 +65,6 @@ const [pollsData, setPollsData] = useState<PollType[]>([]);
           ))}
         </div>
       </div>
-    </AdminLayout>
+    </Layout>
   );
 }

@@ -1,6 +1,4 @@
 import React from 'react'
-import img from "@/public/assets/mainimg.svg"
-import Image from 'next/image'
 import { Toaster } from 'sonner'
 import { Vote } from 'lucide-react'
 
@@ -17,7 +15,7 @@ export default function AuthLayouts({children}: { children :React.ReactNode}) {
         </div>
         
         <h1 className="text-6xl md:text-8xl font-bold neon-text mb-6 animate-pulse">
-          Let's Vote
+          Let&apos;s Vote
         </h1>
         
         <p className="text-2xl md:text-3xl text-foreground mb-4">

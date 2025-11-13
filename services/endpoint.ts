@@ -5,6 +5,7 @@ export const queryPath = {
     profile: "/auth/me/",
     activePolls: "/api/polls",
     votePoll: "/api/polls/{id}/vote/",
-    getPoll: "/api/polls/{id}/"
+    getPoll: "/api/polls/{id}/",
+    getPollResult: "/api/polls/"
 
 }

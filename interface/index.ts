@@ -23,6 +23,7 @@ export type  FormInputPassProps = {
   created_by: string;
   expires_at: string;
   options: Options[]
+  total_votes?: string
 
 }
 export interface Options {

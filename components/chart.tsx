@@ -1,23 +1,9 @@
-"use client"
 
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { useEffect, useState } from "react"
-import { getResult } from "@/pages/api/polls"
+import { useGetPollResultQuery } from "@/services/pollsService"
+import { Spinner } from "./ui/spinner"
 
-// const chartData = [
-//   { month: "January", desktop: 186,  },
-//   { month: "February", desktop: 305,  },
-//   { month: "March", desktop: 237,  },
-//   { month: "April", desktop: 73,  },
-//   { month: "May", desktop: 209,  },
-//   { month: "June", desktop: 214,  },
-//   {
-//   "month": "Blue",
-//   "votes": 1
-// }
-// ]
 
 
 
@@ -28,62 +14,39 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-//@typescript-eslint/no-explicit-any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ChartBar(pollId: any) {
-const [chartData, setChartData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+
   const id = pollId.pollId
+  const {data: pollResult, isLoading,isError} = useGetPollResultQuery({id})
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const chartData: any[] = (pollResult as any)?.options?.map((option: any) => ({
+      name: option.text,
+      votes: option.votes_count,
+  }));
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      try {
-        const response = await getResult(id);
-        console.log(response,"chat response")
-        
-        // Transform the API response data for the chart
-        //@typescript-eslint/no-explicit-any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const transformedData = response.data.options.map((option: any) => ({
-          name: option.text,
-          votes: option.votes_count,
-        }));
   
-        
-        setChartData(transformedData);
-      } catch (err) {
-        console.error("Failed to get poll results:", err);
-        setError("Failed to load poll results.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (pollId) {
-      fetchResults();
-    }
-  }, [pollId,chartData,id]);
-  
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[200px] w-full">
-        <p>Loading results...</p>
+       <Spinner />
       </div>
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="flex justify-center items-center min-h-[200px] w-full">
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-500">Try again</p>
       </div>
     );
   }
 
   
   return (
-    <ChartContainer config={chartConfig} className="min-h-[200px] w-1/5 z-0">
+    <ChartContainer config={chartConfig} className="min-h-[200px] w-[40%] z-0">
       <BarChart accessibilityLayer data={chartData}>
          <CartesianGrid vertical={false} />
          <XAxis

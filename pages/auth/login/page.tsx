@@ -34,44 +34,71 @@ export default function Login() {
     }),
 
     onSubmit: async (values) => {
-      setError("");
-      await isLoginUser({
-        email: values.email,
-        password: values.password,
-      })
-        .unwrap()
-        .then((response: any) => {
-          const access = response.access 
-          const refresh = response.refresh
-          
-          if (typeof window !== "undefined") {
-            if (access) 
-              sessionStorage.setItem("token", access);
-              sessionStorage.setItem("refresh_token", refresh);
+      try {
+        const response = await isLoginUser({
+          email: values.email,
+          password: values.password,
+        }).unwrap();
+      const access = response.access;
+      const refresh = response.refresh;
 
+      if (typeof window !== "undefined") {
+        if (access || refresh) {
+          if (access !== undefined && refresh !== undefined ) {
+            sessionStorage.setItem("token", String(access));
+             sessionStorage.setItem("refresh_token", String(refresh));
           }
+    
+        }
+      }
+        // refetchProfile?.();
+         await refetchProfile();
         
-          refetchProfile?.();
-
+        toast.success("Login successful!");
+        //check if role is voter or admin redirect to respective dashboard
+        if (getProfile?.role === "voter") {
           toast.success("Login successful!");
-          //check if role is voter or admin redirect to respective dashboard
-          if (getProfile?.role === "voter") {
-          
           router.push("/polls");
-            return;
-          }else if (getProfile?.role === "admin") {
-             router.push("/dashboard");
-            return;
-          }
+          return;
+        } else if (getProfile?.role === "admin") {
+          toast.success("Login successful!");
+          router.push("/dashboard");
+          return;
+        }
+      } catch (err: any) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // .then((response: any) => {
+        //   const access = response.access
+        //   const refresh = response.refresh
 
-        })
-        .catch((err: any) => {
-          toast.error(
-            err.data?.email ||
-              err.data?.detail ||
-              "Invalid email or password. Please try again."
-          );
-        });
+        //   if (typeof window !== "undefined") {
+        //     if (access)
+        //       sessionStorage.setItem("token", access);
+        //       sessionStorage.setItem("refresh_token", refresh);
+
+        //   }
+
+        //   refetchProfile?.();
+
+        //   //check if role is voter or admin redirect to respective dashboard
+        //   if (getProfile?.role === "voter") {
+        //   toast.success("Login successful!");
+        //   router.push("/polls");
+        //     return;
+        //   }else if (getProfile?.role === "admin") {
+        //     toast.success("Login successful!");
+        //      router.push("/dashboard");
+        //     return;
+        //   }
+
+        // })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        toast.error(
+          err.data?.email ||
+            err.data?.detail ||
+            "Invalid email or password. Please try again."
+        );
+      }
     },
   });
   return (

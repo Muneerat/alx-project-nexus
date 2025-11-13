@@ -11,6 +11,8 @@ export type userData =  {
 export type loginData = {
     email: string,
     password: string
+    access?: string;
+    refresh?: string | number | undefined
 }
 export type userProfile = {
     email: string,
