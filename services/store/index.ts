@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { authServiceApi } from "../authService";
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { pollServiceApi } from "../pollsService";
+import { selectIsAuthenticated } from "./authSlice";
 
 export const store = configureStore({
     reducer: {

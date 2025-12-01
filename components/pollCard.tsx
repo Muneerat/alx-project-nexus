@@ -42,7 +42,7 @@ export default function PollCard({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 text-[#001124] border border-[#001124]  hover:shadow-2xl transition-all duration-300 ">
+    <div className="bg-white rounded-lg shadow-md p-6 text-main border border-main  hover:shadow-2xl transition-all duration-300 ">
       <Toaster position="top-right" richColors />
       <h1 className="text-2xl font-semibold mb-2">{title}</h1>
       <p className="text-gray-600 mb-4">{description}</p>
@@ -87,7 +87,7 @@ export default function PollCard({
                     ${
                       !selectedOption || voting
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-[#001124] hover:bg-blue-9"
+                        : "bg-main hover:bg-blue-9"
                     }
                 `}
       >
@@ -96,7 +96,7 @@ export default function PollCard({
       <div className="flex justify-end justify-items-end-safe text-right ">
         <Link
           href={`/polls/${id}`}
-          className="w-fit text-right text-[#015FC7] py-2 rounded-lg font-semibold transition-colors hover:text-[#001124]"
+          className="w-fit text-right text-[#015FC7] py-2 rounded-lg font-semibold transition-colors hover:text-main"
         >
           View Results
         </Link>
@@ -106,7 +106,7 @@ export default function PollCard({
         onClick={() => console.log('Selected:', selectedOption)}
         disabled={!selectedOption}
         className={`w-full text-white py-3 rounded-lg font-semibold transition-colors
-          ${!selectedOption ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#001124] hover:bg-blue-9'}
+          ${!selectedOption ? 'bg-gray-400 cursor-not-allowed' : 'bg-main hover:bg-blue-9'}
         `}
       >
         Submit Vote

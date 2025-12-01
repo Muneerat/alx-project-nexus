@@ -41,7 +41,7 @@ export default function PollCardDetail({
   if (isLoading)  <Spinner />
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 text-[#001124] border border-[#001124]  hover:shadow-2xl transition-all duration-300 ">
+    <div className="bg-white rounded-lg shadow-md p-6 text-main border border-main  hover:shadow-2xl transition-all duration-300 ">
       <Toaster position="top-right" richColors />
       <h1 className="text-2xl font-semibold mb-2">{title}</h1>
       <p className="text-gray-600 mb-4">{description}</p>
@@ -86,7 +86,7 @@ export default function PollCardDetail({
                     ${
                       !selectedOption || voting
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-[#001124] hover:bg-blue-9"
+                        : "bg-main hover:bg-blue-9"
                     }
                 `}
       >

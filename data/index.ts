@@ -164,8 +164,14 @@ export const pollsDate = [
     },
     {
       id: 3,
-      link: "/view-polls",
+      link: "/polls",
       text: "Active Polls",
+       onClick: null,
+    },
+    {
+      id: 4,
+      link: "/members",
+      text: "Members",
        onClick: null,
     },
    

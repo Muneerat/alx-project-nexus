@@ -3,7 +3,7 @@ export type userData =  {
     first_name: string,
     surname: string
     email: string,
-    confirm_email: string,
+    confirm_email?: string,
     password: string,
     confirm_password: string,
 }
@@ -22,7 +22,8 @@ export type userProfile = {
 }
 
 export type PollTypeResult = {
-    results: PollType[]
+    results: PollType[];
+      count?: string | number 
 }
 
 export type PollType = {
@@ -32,7 +33,8 @@ export type PollType = {
   created_by: string;
   expires_at: string;
   options: { id: string | number; text: string }[]; 
-  has_voted?: boolean; // Add this if your API returns it
+  has_voted?: boolean; 
+  count?: string
 }
 
 export type VotePayload = {

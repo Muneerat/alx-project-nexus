@@ -7,12 +7,16 @@ import { Button } from "./ui/button";
 import { useGetProfileQuery, useLogoutMutation } from "@/services";
 import { toast } from "sonner";
 import { adminNavLinks, userNavLinks } from "@/data";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated, selectRole } from "@/services/store/authSlice";
 
 export default function Navbar() {
    const router = useRouter();
    const [isLogout] = useLogoutMutation()
      const { data, } = useGetProfileQuery();
      const getProfile =  data?.role
+  const userRole = useSelector(selectRole);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
    const handleLogout = async (e: any) => {
     e.preventDefault(); 
@@ -31,7 +35,7 @@ export default function Navbar() {
 
 
   return (
-    <div className="bg-[#001124] text-white py-4 w-full fixed flex justify-between items-center px-8 top-0 border-b border-border/50 backdrop-blur-sm  z-50 ">
+    <div className="bg-main text-white py-4 w-full fixed flex justify-between items-center px-8 top-0 border-b border-border/50 backdrop-blur-sm  z-50 ">
       <div className="flex items-center gap-3">
        <div className="p-2 rounded-lg bg-primary/10 neon-glow">
             <Vote className="w-6 h-6 text-[#015FC7]" />

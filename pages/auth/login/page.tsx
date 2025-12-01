@@ -9,10 +9,13 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import { toast } from "sonner";
 import { useGetProfileQuery, useLoginUserMutation } from "@/services";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/services/store/authSlice";
 
 export default function Login() {
   const [isLoginUser, { isLoading }] = useLoginUserMutation();
-  const { data: getProfile, refetch: refetchProfile } = useGetProfileQuery();
+  const { data, refetch: refetchProfile } = useGetProfileQuery();
+  const dispatch = useDispatch()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState("");
@@ -52,11 +55,13 @@ export default function Login() {
         }
       }
         // refetchProfile?.();
-         await refetchProfile();
+         const getProfile =  await refetchProfile().unwrap();
+         dispatch(setCredentials(getProfile))
+         console.log(getProfile, "getProfile")
         
-        toast.success("Login successful!");
         //check if role is voter or admin redirect to respective dashboard
         if (getProfile?.role === "voter") {
+          
           toast.success("Login successful!");
           router.push("/polls");
           return;
@@ -65,34 +70,11 @@ export default function Login() {
           router.push("/dashboard");
           return;
         }
-      } catch (err: any) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // .then((response: any) => {
-        //   const access = response.access
-        //   const refresh = response.refresh
-
-        //   if (typeof window !== "undefined") {
-        //     if (access)
-        //       sessionStorage.setItem("token", access);
-        //       sessionStorage.setItem("refresh_token", refresh);
-
-        //   }
-
-        //   refetchProfile?.();
-
-        //   //check if role is voter or admin redirect to respective dashboard
-        //   if (getProfile?.role === "voter") {
-        //   toast.success("Login successful!");
-        //   router.push("/polls");
-        //     return;
-        //   }else if (getProfile?.role === "admin") {
-        //     toast.success("Login successful!");
-        //      router.push("/dashboard");
-        //     return;
-        //   }
-
-        // })
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         toast.success("Login successful!");
+      }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any} 
+      catch (err: any) {
+  
         toast.error(
           err.data?.email ||
             err.data?.detail ||

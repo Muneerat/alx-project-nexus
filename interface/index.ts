@@ -38,5 +38,5 @@ export interface Options {
  export interface BoxCardProps{
   // id: string;
   text: string;
-  number: string
+  number?: string | number | undefined
  }
