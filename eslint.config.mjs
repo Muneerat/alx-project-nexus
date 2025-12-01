@@ -21,7 +21,6 @@ const eslintConfig = [
     "react/react-in-jsx-scope": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
-    //disable no-explicit-any rule
     "@typescript-eslint/no-explicit-any": "off",
   }
 },

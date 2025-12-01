@@ -29,7 +29,7 @@ export default function Login() {
     validationSchema: Yup.object().shape({
       email: Yup.string()
         .email("Invalid email address")
-        .required("Enter a valid em ,ail address"),
+        .required("Enter a valid email address"),
 
       password: Yup.string()
         .required("Password is required")
