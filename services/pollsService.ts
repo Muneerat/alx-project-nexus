@@ -1,0 +1,138 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { PollTypeResult, userData, VotePayload } from "./types";
+import { queryPath } from "./endpoint";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+export const pollServiceApi = createApi({
+  reducerPath: "pollService ",
+  baseQuery: fetchBaseQuery({
+    baseUrl: BASE_URL,
+    //credentials: "include",
+    prepareHeaders: (headers, { getState }) => {
+      // cast getState to a known shape so we can safely access auth.accessToken
+      const state = getState() as
+        | { auth?: { accessToken?: string } }
+        | undefined;
+      let token = state?.auth?.accessToken;
+
+      if (!token && typeof window !== "undefined") {
+        token =
+          sessionStorage.getItem("access_token") ??
+          sessionStorage.getItem("accessToken") ??
+          sessionStorage.getItem("token") ??
+          undefined;
+      }
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+        console.log("token set in pollServiceApi:", token);
+      }
+      return headers;
+    },
+  }),
+  endpoints: (builder) => ({
+    voteOnPoll: builder.mutation<any, VotePayload>({
+      query: ({ pollId, option_id }) => ({
+        url: `/api/polls/${pollId}/vote/`,
+        method: "POST",
+        body: {
+          option_id: option_id,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getActivePoll: builder.query<
+      PollTypeResult,
+      { pollId: string | undefined }
+    >({
+      query: ({ pollId }) => ({
+        url: `/api/polls/${pollId}/`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getPollResult: builder.query({
+      query: ({ id }) => ({
+        url: `${queryPath.getPollResult}/${id}/results/`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getActivePolls: builder.query<PollTypeResult, void>({
+      query: () => ({
+        url: queryPath.activePolls,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getRoleCount: builder.query({
+      query: ({}) => ({
+        url: queryPath.getUserCount,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getUsers: builder.query({
+      query: ({url}) => ({
+        url: url ?? queryPath.getUsers,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    }),
+    createPoll: builder.mutation<PollTypeResult, any>({
+      query: (payload) => ({
+        url: queryPath.createPoll,
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    }),
+   createPollOptions: builder.mutation<any, { pollId: string | number; options: { text: string }[] }>({
+      query: ({ pollId, options }) => ({ 
+        url: `${queryPath.createPoll}${pollId}/options/`, 
+        method: "POST",
+        body: options, 
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    }),
+    createUser: builder.mutation<userData, userData>({
+      query: (body) => ({
+        url: queryPath.createUser,
+        method: "POST",
+        body,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+    }),
+    
+  }),
+});
+
+export const {
+  useVoteOnPollMutation,
+  useGetActivePollQuery,
+  useGetPollResultQuery,
+  useGetActivePollsQuery,
+  useGetRoleCountQuery,
+  useGetUsersQuery,
+  useCreatePollMutation,
+  useCreatePollOptionsMutation,
+  useCreateUserMutation
+} = pollServiceApi;

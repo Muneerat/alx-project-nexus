@@ -1,50 +1,21 @@
 
 import PollCard from "@/components/pollCard";
-import React, { useEffect, useState } from "react";
-import { viewPolls } from "../api/polls";
-import Layout from "@/components/layout";
-import { useGetActivePollsQuery } from "@/services/pollsService";
-import { Card } from "@/components/ui/card";
+import React from "react";
+import UserLayout from "@/components/layout";
 import { Vote } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { useGetActivePollsQuery } from "@/services/pollsService";
+import { PollType } from "@/services/types";
 
-type PollType = {
-  id: string;
-  title: string;
-  description: string;
-  created_by: string;
-  expires_at: string;
-  //@typescript-eslint/no-explicit-any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options: any[]; 
-}
+
+
+
 export default  function Poll() {
-const {data,isLoading,isError} =  useGetActivePollsQuery();
-const getActivePolls = data?.results as PollType[] | undefined;
-const [pollsData, setPollsData] = useState<PollType[]>([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPolls = async () => {
-      try {
-        const response = await viewPolls();
-        setPollsData(response.data.results);
-      } catch {
-        setError("Failed to load polls.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPolls();
-  }, []); 
-
-
-
-
+  const {data,isLoading,isError} =  useGetActivePollsQuery();
+  const getActivePolls = data?.results as PollType[] | undefined;
 
   return (
-     <Layout>
+    <UserLayout>
       <div className="pt-22 bg-white px-10 min-h-screen bg-gradient-to-br from-[#09111f] via-background to-[#09111f]">
          <h1 className="text-4xl font-bold neon-text my-2">Active Polls</h1>
           <p className="text-muted-foreground mb-10">
@@ -70,6 +41,6 @@ const [pollsData, setPollsData] = useState<PollType[]>([]);
 
         </div>
       </div>
-    </Layout>
+    </UserLayout>
   );
 }

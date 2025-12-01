@@ -23,6 +23,7 @@ export type  FormInputPassProps = {
   created_by: string;
   expires_at: string;
   options: Options[]
+  total_votes?: string
 
 }
 export interface Options {
@@ -32,4 +33,10 @@ export interface Options {
  export interface Login{
   email: string;
   password: string
+ }
+
+ export interface BoxCardProps{
+  // id: string;
+  text: string;
+  number?: string | number | undefined
  }

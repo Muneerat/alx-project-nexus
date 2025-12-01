@@ -1,5 +1,5 @@
 import PollCard from "@/components/pollCard";
-import UserLayout from "@/components/userLayout";
+import Layout from "@/components/layout";
 import { pollsDate } from "@/data";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -12,19 +12,19 @@ export default function SinglePoll() {
 
   if (!singlePoll) {
     return (
-      <UserLayout>
+      <Layout>
         <div className="flex justify-center items-center h-[50vh]">
           <p className="text-xl text-gray-500">Poll not found.</p>
         </div>
-      </UserLayout>
+      </Layout>
     );
   }
 
   return (
-    <UserLayout>
+    <Layout>
      
         <PollCard  {...singlePoll} />
    
-    </UserLayout>
+    </Layout>
   );
 }
