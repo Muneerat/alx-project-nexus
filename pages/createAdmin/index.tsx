@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 
 export default function CreateAdmin() {
   const [createAdmin, { isLoading }] = useCreateUserMutation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState("");
   const router = useRouter();
   const formik = useFormik({

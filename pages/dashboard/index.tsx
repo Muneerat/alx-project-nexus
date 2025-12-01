@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BoxCard from "../../components/boxCard";
-import { GetRoleCount } from "@/pages/api/polls";
 import Layout from "@/components/layout";
 import {
   useGetActivePollsQuery,
@@ -19,7 +18,8 @@ export default function Dashboard() {
   const [currentUrl, setCurrentUrl] = useState(INITIAL_URL);
   const { data: getUser, isLoading: isUsersLoading} = useGetUsersQuery({url: currentUrl});
 const isLoading = isRoleLoading || isActivePollLoading || isUsersLoading;
-  console.log("User Data", getUser);
+
+ 
   const userData = getUser?.results || [];
   const nextUrl = getUser?.next || null;
   const previousUrl = getUser?.previous || null;
@@ -45,9 +45,11 @@ const isLoading = isRoleLoading || isActivePollLoading || isUsersLoading;
       {isLoading &&  <Spinner />} 
       <div className="grid md:grid-cols-4 sm:grid-cols-2  gap-10  py-10">
         {roleCount &&
-          Object.entries(roleCount).map(([role, count]) => (
-            <BoxCard key={role} text={role} number={count} />
-          ))}
+          Object.entries(roleCount as Record<string, string | number>).map(
+            ([role, count]) => (
+              <BoxCard key={role} text={role} number={count} />
+            )
+          )}
         {activePoll && (
           <BoxCard text="Active Polls" number={activePoll?.count} />
         )}

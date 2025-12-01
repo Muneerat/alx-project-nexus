@@ -6,19 +6,17 @@ import * as Yup from "yup";
 import FormInput from "@/components/input";
 import Button from "@/components/button";
 import { toast } from "sonner";
-import { GetRoleCount } from "../api/polls";
 import Layout from "@/components/layout";
 import {
   useCreatePollMutation,
-  useCreatePollOptionsMutation,
 } from "@/services/pollsService";
-import { pollsDate } from "@/data";
 
 export default function CreatePoll() {
   const [createPoll, { isLoading: isCreatingPoll }] = useCreatePollMutation();
-  const [createPollOptions, { isLoading: isCreatingPollOption }] =
-    useCreatePollOptionsMutation();
-  const isSubmitting = isCreatingPoll || isCreatingPollOption;
+  // const [createPollOptions, { isLoading: isCreatingPollOption }] =
+  //   useCreatePollOptionsMutation();
+  const isSubmitting = isCreatingPoll ;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
    const [errorMessage, setErrorMessage] = useState('');
 
 
@@ -46,6 +44,7 @@ export default function CreatePoll() {
         description: values.description,
         expires_at: values.expires_at,
          options: values.options
+           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter((optionText: any) => optionText.trim() !== "")
         .map((optionText: any) => ({ text: optionText.trim() }))
       };

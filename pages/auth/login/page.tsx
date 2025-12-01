@@ -14,6 +14,7 @@ import { setCredentials } from "@/services/store/authSlice";
 
 export default function Login() {
   const [isLoginUser, { isLoading }] = useLoginUserMutation();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data, refetch: refetchProfile } = useGetProfileQuery();
   const dispatch = useDispatch()
 
@@ -72,9 +73,8 @@ export default function Login() {
         }
          toast.success("Login successful!");
       }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any} 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       catch (err: any) {
-  
         toast.error(
           err.data?.email ||
             err.data?.detail ||

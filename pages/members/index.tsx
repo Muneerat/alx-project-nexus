@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Layout from "@/components/layout";
 import {
-  useCreateUserMutation,
   useGetUsersQuery,
 } from "@/services/pollsService";
 import { DataTable } from "@/components/memberTable";
@@ -13,7 +12,6 @@ import Link from "next/link";
 const INITIAL_URL = "https://codedman.pythonanywhere.com/auth/users/";
 
 export default function Members() {
-  const [createUser, {isLoading}] = useCreateUserMutation()
   const [currentUrl, setCurrentUrl] = useState(INITIAL_URL);
   const { data: getUser, isLoading: isUsersLoading} = useGetUsersQuery({url: currentUrl});
   const userData = getUser?.results || [];
