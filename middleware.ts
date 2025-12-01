@@ -26,7 +26,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const PROTECTED_PATHS = ["/polls", "/dashboard", "/profile"]; // add your protected routes here
+const PROTECTED_PATHS = ["/polls", "/dashboard", "/profile"]; 
 
 export function middleware(request: NextRequest) {
   const { nextUrl: url, cookies,  } = request;

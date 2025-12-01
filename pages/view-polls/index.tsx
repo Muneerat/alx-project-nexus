@@ -20,9 +20,12 @@ type PollType = {
 export default  function Poll() {
 const {data,isLoading,isError} =  useGetActivePollsQuery();
 const getActivePolls = data?.results as PollType[] | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const [pollsData, setPollsData] = useState<PollType[]>([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [error, setError] = useState("");
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPolls = async () => {

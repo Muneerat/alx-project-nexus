@@ -15,8 +15,6 @@ export default function Navbar() {
    const [isLogout] = useLogoutMutation()
      const { data, } = useGetProfileQuery();
      const getProfile =  data?.role
-  const userRole = useSelector(selectRole);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
    const handleLogout = async (e: any) => {
     e.preventDefault(); 
